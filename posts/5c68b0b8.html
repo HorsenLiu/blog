@@ -5,42 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.0.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.13.0/css/all.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"horsenliu.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"horsenliu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="0. 常见面试题 JVM 内存模型以及分区，需要详细到每个区放什么 堆里面的分区：Eden，Survival from to，老年代，各自的特点。 GC 的三种收集方法：标记清除，标记整理，复制算法的原理与特点，分别用在什么地方 Minor GC 与 Full GC 分别在什么时候发生  1. GC 算法总体概述一个对象的历程   JVM 在进行GC时，并非每次都对上面三个内存区域一起回收的，大部">
 <meta property="og:type" content="article">
 <meta property="og:title" content="06_GC 详解">
-<meta property="og:url" content="http://horsenliu.github.io/blog/posts/5c68b0b8.html">
+<meta property="og:url" content="http://horsenliu.github.io/posts/5c68b0b8.html">
 <meta property="og:site_name" content="霍森的笔记本">
 <meta property="og:description" content="0. 常见面试题 JVM 内存模型以及分区，需要详细到每个区放什么 堆里面的分区：Eden，Survival from to，老年代，各自的特点。 GC 的三种收集方法：标记清除，标记整理，复制算法的原理与特点，分别用在什么地方 Minor GC 与 Full GC 分别在什么时候发生  1. GC 算法总体概述一个对象的历程   JVM 在进行GC时，并非每次都对上面三个内存区域一起回收的，大部">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/5c68b0b8/image-20200922082947515.png">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/5c68b0b8/image-20200922083137251.png">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/5c68b0b8/image-20200922085159717.png">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/5c68b0b8/image-20200922090752833.png">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/5c68b0b8/image-20200922091120493.png">
+<meta property="og:image" content="http://horsenliu.github.io/posts/5c68b0b8/image-20200922082947515.png">
+<meta property="og:image" content="http://horsenliu.github.io/posts/5c68b0b8/image-20200922083137251.png">
+<meta property="og:image" content="http://horsenliu.github.io/posts/5c68b0b8/image-20200922085159717.png">
+<meta property="og:image" content="http://horsenliu.github.io/posts/5c68b0b8/image-20200922090752833.png">
+<meta property="og:image" content="http://horsenliu.github.io/posts/5c68b0b8/image-20200922091120493.png">
 <meta property="article:published_time" content="2020-09-21T14:15:00.000Z">
 <meta property="article:modified_time" content="2020-10-12T00:36:33.078Z">
 <meta property="article:author" content="Horsen Liu">
 <meta property="article:tag" content="JVM">
 <meta property="article:tag" content="GC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/5c68b0b8/image-20200922082947515.png">
+<meta name="twitter:image" content="http://horsenliu.github.io/posts/5c68b0b8/image-20200922082947515.png">
 
-<link rel="canonical" href="http://horsenliu.github.io/blog/posts/5c68b0b8.html">
+<link rel="canonical" href="http://horsenliu.github.io/posts/5c68b0b8.html">
 
 
 <script id="page-configurations">
@@ -102,7 +102,7 @@
 
   <div class="site-meta">
 
-    <a href="/blog/" class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">霍森的笔记本</h1>
       <span class="logo-line-after"><i></i></span>
@@ -124,27 +124,27 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">123</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">123</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">36</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">36</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">220</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">220</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -205,10 +205,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://horsenliu.github.io/blog/posts/5c68b0b8.html">
+    <link itemprop="mainEntityOfPage" href="http://horsenliu.github.io/posts/5c68b0b8.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="image" content="/images/avatar.png">
       <meta itemprop="name" content="Horsen Liu">
       <meta itemprop="description" content="">
     </span>
@@ -236,11 +236,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/blog/categories/Java-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Java 学习笔记</span></a>
+                  <a href="/categories/Java-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Java 学习笔记</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/blog/categories/Java-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+                  <a href="/categories/Java-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
                 </span>
             </span>
 
@@ -283,7 +283,7 @@
 <li>Minor GC 与 Full GC 分别在什么时候发生</li>
 </ol>
 <h3 id="1-GC-算法总体概述"><a href="#1-GC-算法总体概述" class="headerlink" title="1. GC 算法总体概述"></a>1. GC 算法总体概述</h3><p>一个对象的历程</p>
-<img src="/blog/blog/posts/blog/posts/5c68b0b8/image-20200922082947515.png" class>
+<img src="/posts/5c68b0b8/image-20200922082947515.png" class>
 
 <p><strong>JVM 在进行GC时，并非每次都对上面三个内存区域一起回收的，大部分时候回收的都是指新生代</strong></p>
 <p>因此 GC 按照回收的区域又分了两种类型，一种是普通的 GC（minor GC），一种是全局 GC （major GC or Full GC）</p>
@@ -293,7 +293,7 @@
 </ul>
 <span id="more"></span>
 
-<h3 id="2-GC-四大算法"><a href="#2-GC-四大算法" class="headerlink" title="2. GC 四大算法"></a>2. GC 四大算法</h3><h4 id="2-1-引用计数法"><a href="#2-1-引用计数法" class="headerlink" title="2.1 引用计数法"></a>2.1 引用计数法</h4><img src="/blog/blog/posts/blog/posts/5c68b0b8/image-20200922083137251.png" class>
+<h3 id="2-GC-四大算法"><a href="#2-GC-四大算法" class="headerlink" title="2. GC 四大算法"></a>2. GC 四大算法</h3><h4 id="2-1-引用计数法"><a href="#2-1-引用计数法" class="headerlink" title="2.1 引用计数法"></a>2.1 引用计数法</h4><img src="/posts/5c68b0b8/image-20200922083137251.png" class>
 
 <p>每个对象有一个引用计数器，当对象被引用一次则计数器加 1，当对象引用失效一次，则计数器减 1，计数器为 0 的对象意味着是垃圾对象，可以被 GC 回收。</p>
 <p>目前虚拟机基本都是采用<strong>可达性算法</strong>，从 GC Roots 作为起点开始搜索，那么整个连通图中的对象边都是活对象，对于 GC Roots 无法到达的对象变成了垃圾回收对象，随时可被 GC 回收。</p>
@@ -310,7 +310,7 @@
 <p>面试题：如何判断哪个是 To 区呢？一句话：<strong>谁空谁是 To</strong></p>
 <hr>
 <p>复制算法的思想就是将内存分为两块，每次只用其中一块，当这一块内存用完，就将还活着的对象复制到另外一块上面。</p>
-<img src="/blog/blog/posts/blog/posts/5c68b0b8/image-20200922085159717.png" class>
+<img src="/posts/5c68b0b8/image-20200922085159717.png" class>
 
 <ul>
 <li>优点<ul>
@@ -325,7 +325,7 @@
 </ul>
 <h4 id="2-3-标记清除法-Mark-Sweep"><a href="#2-3-标记清除法-Mark-Sweep" class="headerlink" title="2.3 标记清除法 Mark-Sweep"></a>2.3 标记清除法 Mark-Sweep</h4><p><strong>老年代一般是由标记清除或者是标记清除与标记整理的混合实现</strong></p>
 <p>当堆中的有效内存空间被耗尽的时候，就会停止整个程序（也被称为 stop the world），然后进行两项工作，第一项则是标记，第二项则是清除。</p>
-<img src="/blog/blog/posts/blog/posts/5c68b0b8/image-20200922090752833.png" class>
+<img src="/posts/5c68b0b8/image-20200922090752833.png" class>
 
 <ul>
 <li><p>标记：从引用根节点开始标记所有被引用的对象，标记的过程其实就是遍历所有的 GC Roots ，然后将所有 GC Roots 可达的对象，标记为存活的对象。</p>
@@ -339,7 +339,7 @@
 <li>这种方式清理出来的空闲内存是不连续的。这点不难理解，我们的死亡对象都是随机的出现在内存的各个角落，现在把他们清除之后，内存的布局自然乱七八糟，而为了应付 这一点，JVM 就不得不维持一个内存空间的空闲列表，这又是一种开销。而且在分配数组对象的时候，寻找连续的内存空间会不太好找。</li>
 </ol>
 <h4 id="2-3-标记压缩法-Mark-Compact"><a href="#2-3-标记压缩法-Mark-Compact" class="headerlink" title="2.3 标记压缩法 Mark-Compact"></a>2.3 标记压缩法 Mark-Compact</h4><p>在整理压缩阶段，不再对标记的对象作回收，而是通过所有存活对象都像一端移动，然后直接清除边界以外的内存。</p>
-<img src="/blog/blog/posts/blog/posts/5c68b0b8/image-20200922091120493.png" class>
+<img src="/posts/5c68b0b8/image-20200922091120493.png" class>
 
 <p>可以看到，标记的存活对象将会被整理，按照内存地址依次排列，而未被标记的内存会被清理掉，如此一来，当我们需要给新对象分配内存时，JVM 只需要持有一个内存的起始地址即可，这比维护一个空闲列表显然少了许多开销。</p>
 <p>标记、整理算法不仅可以弥补标记、清除算法当中内存区域分散的缺点，也消除了复制算法当中，内存减半的高额代价。</p>
@@ -371,7 +371,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://horsenliu.github.io/blog/posts/5c68b0b8.html" title="06_GC 详解">http://horsenliu.github.io/blog/posts/5c68b0b8.html</a>
+    <a href="http://horsenliu.github.io/posts/5c68b0b8.html" title="06_GC 详解">http://horsenliu.github.io/posts/5c68b0b8.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -383,8 +383,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/blog/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
-              <a href="/blog/tags/GC/" rel="tag"><i class="fa fa-tag"></i> GC</a>
+              <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+              <a href="/tags/GC/" rel="tag"><i class="fa fa-tag"></i> GC</a>
           </div>
 
         
@@ -393,11 +393,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/blog/posts/d9304f42.html" rel="prev" title="05_堆 Heap">
+    <a href="/posts/d9304f42.html" rel="prev" title="05_堆 Heap">
       <i class="fa fa-chevron-left"></i> 05_堆 Heap
     </a></div>
       <div class="post-nav-item">
-    <a href="/blog/posts/d366874c.html" rel="next" title="集合">
+    <a href="/posts/d366874c.html" rel="next" title="集合">
       集合 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -465,27 +465,27 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="Horsen Liu"
-      src="/blog/images/avatar.png">
+      src="/images/avatar.png">
   <p class="site-author-name" itemprop="name">Horsen Liu</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/blog/archives/">
+          <a href="/archives/">
         
           <span class="site-state-item-count">220</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/blog/categories/">
+            <a href="/categories/">
           
         <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/blog/tags/">
+            <a href="/tags/">
           
         <span class="site-state-item-count">123</span>
         <span class="site-state-item-name">标签</span></a>
@@ -507,7 +507,7 @@
       </span>
   </div>
   <div class="cc-license motion-element" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/blog/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
@@ -586,48 +586,48 @@
   </div>
 
   
-  <script src="/blog/lib/anime.min.js"></script>
-  <script src="/blog/lib/velocity/velocity.min.js"></script>
-  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/blog/js/utils.js"></script>
+<script src="/js/utils.js"></script>
 
-<script src="/blog/js/motion.js"></script>
-
-
-<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/js/motion.js"></script>
 
 
-<script src="/blog/js/next-boot.js"></script>
-
-<script src="/blog/js/bookmark.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
+<script src="/js/next-boot.js"></script>
 
-
-  
-
-
-
-
-  
-<script src="/blog/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
+<script src="/js/bookmark.js"></script>
 
 
 
 
   
 
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
-<script src="/blog/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/blog/live2dw/assets/assets/hijiki.model.json"},"display":{"superSample":2,"width":180,"height":360,"position":"left","hOffset":40,"vOffset":-60},"mobile":{"show":false,"scale":0.1},"react":{"opacityDefault":0.7,"opacityOnHover":0.8},"log":false});</script></body>
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"superSample":2,"width":180,"height":360,"position":"left","hOffset":40,"vOffset":-60},"mobile":{"show":false,"scale":0.1},"react":{"opacityDefault":0.7,"opacityOnHover":0.8},"log":false});</script></body>
 </html>

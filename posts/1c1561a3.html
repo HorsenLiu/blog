@@ -5,42 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.0.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.13.0/css/all.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"horsenliu.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"horsenliu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="1. 认识 Vuex Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  看得懂吗，看不懂就对了。 所谓的状态管理，就是把需要多个组件共享的变量全部存储在一个对象里面，将这个对象放在顶层的 Vue 实例中，让其他组件可以使用。常见的状态例如用户的登录状态、用户名称、头像、地理位置信息等等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="11_Vuex">
-<meta property="og:url" content="http://horsenliu.github.io/blog/posts/1c1561a3.html">
+<meta property="og:url" content="http://horsenliu.github.io/posts/1c1561a3.html">
 <meta property="og:site_name" content="霍森的笔记本">
 <meta property="og:description" content="1. 认识 Vuex Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  看得懂吗，看不懂就对了。 所谓的状态管理，就是把需要多个组件共享的变量全部存储在一个对象里面，将这个对象放在顶层的 Vue 实例中，让其他组件可以使用。常见的状态例如用户的登录状态、用户名称、头像、地理位置信息等等。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/1c1561a3/vuex.gif">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/1c1561a3/vuexx.gif">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/1c1561a3/image-20210321180958645.png">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/1c1561a3/vuexxx.gif">
-<meta property="og:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/1c1561a3/image-20210322165336254.png">
+<meta property="og:image" content="http://horsenliu.github.io/posts/1c1561a3/vuex.gif">
+<meta property="og:image" content="http://horsenliu.github.io/posts/1c1561a3/vuexx.gif">
+<meta property="og:image" content="http://horsenliu.github.io/posts/1c1561a3/image-20210321180958645.png">
+<meta property="og:image" content="http://horsenliu.github.io/posts/1c1561a3/vuexxx.gif">
+<meta property="og:image" content="http://horsenliu.github.io/posts/1c1561a3/image-20210322165336254.png">
 <meta property="article:published_time" content="2021-03-15T13:23:00.000Z">
 <meta property="article:modified_time" content="2021-03-23T14:10:26.235Z">
 <meta property="article:author" content="Horsen Liu">
 <meta property="article:tag" content="Vue">
 <meta property="article:tag" content="Vuex">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://horsenliu.github.io/blog/blog/posts/blog/posts/1c1561a3/vuex.gif">
+<meta name="twitter:image" content="http://horsenliu.github.io/posts/1c1561a3/vuex.gif">
 
-<link rel="canonical" href="http://horsenliu.github.io/blog/posts/1c1561a3.html">
+<link rel="canonical" href="http://horsenliu.github.io/posts/1c1561a3.html">
 
 
 <script id="page-configurations">
@@ -102,7 +102,7 @@
 
   <div class="site-meta">
 
-    <a href="/blog/" class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">霍森的笔记本</h1>
       <span class="logo-line-after"><i></i></span>
@@ -124,27 +124,27 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">123</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">123</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">36</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">36</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">220</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">220</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -205,10 +205,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://horsenliu.github.io/blog/posts/1c1561a3.html">
+    <link itemprop="mainEntityOfPage" href="http://horsenliu.github.io/posts/1c1561a3.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="image" content="/images/avatar.png">
       <meta itemprop="name" content="Horsen Liu">
       <meta itemprop="description" content="">
     </span>
@@ -236,11 +236,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/blog/categories/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">前端学习笔记</span></a>
+                  <a href="/categories/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">前端学习笔记</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/blog/categories/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue-%E5%86%8D%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Vue 再学习</span></a>
+                  <a href="/categories/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Vue-%E5%86%8D%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Vue 再学习</span></a>
                 </span>
             </span>
 
@@ -332,7 +332,7 @@
 
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="attr">state</span>: &#123;</span><br><span class="line">    <span class="attr">counter</span>: <span class="number">1000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">mutations</span>: &#123;</span><br><span class="line">    <span class="title function_">increment</span>(<span class="params">state, number</span>) &#123;</span><br><span class="line">      state.<span class="property">counter</span> += number;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">incrementAndDecrement</span>(<span class="params">state, payload</span>) &#123;</span><br><span class="line">      state.<span class="property">counter</span> += (payload.<span class="property">obj1</span> - payload.<span class="property">obj2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">actions</span>: &#123;&#125;,</span><br><span class="line">  <span class="attr">getters</span>: &#123;&#125;,</span><br><span class="line">  <span class="attr">modules</span>: &#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<img src="/blog/blog/posts/blog/posts/1c1561a3/vuex.gif" class>
+<img src="/posts/1c1561a3/vuex.gif" class>
 
 <h5 id="3-2-3-提交风格"><a href="#3-2-3-提交风格" class="headerlink" title="3.2.3 提交风格"></a>3.2.3 提交风格</h5><p>上面的例子是普通用的提交方式：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">&#x27;increment&#x27;</span>, number);</span><br></pre></td></tr></table></figure>
@@ -357,7 +357,7 @@
 
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="attr">state</span>: &#123;</span><br><span class="line">    <span class="attr">counter</span>: <span class="number">1000</span>,</span><br><span class="line">    <span class="attr">students</span>: [...],</span><br><span class="line">    <span class="attr">info</span>: &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;IceBear&#x27;</span>,</span><br><span class="line">      <span class="attr">age</span>: <span class="number">22</span>,</span><br><span class="line">      <span class="attr">height</span>: <span class="number">171</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">mutations</span>: &#123;</span><br><span class="line">    ......</span><br><span class="line">    <span class="title function_">changeName</span>(<span class="params">state</span>) &#123;</span><br><span class="line">      state.<span class="property">info</span>.<span class="property">name</span> = <span class="string">&#x27;Horsen&#x27;</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">updateInfo</span>(<span class="params">state,payload</span>)&#123;</span><br><span class="line">      <span class="title class_">Vue</span>.<span class="title function_">set</span>(state.<span class="property">info</span>,<span class="string">&#x27;address&#x27;</span>,payload.<span class="property">address</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">deleteInfo</span>(<span class="params">state</span>) &#123;</span><br><span class="line">      <span class="title class_">Vue</span>.<span class="title function_">delete</span>(state.<span class="property">info</span>, <span class="string">&#x27;address&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">actions</span>: &#123;&#125;,</span><br><span class="line">  <span class="attr">getters</span>: &#123;&#125;,</span><br><span class="line">  <span class="attr">modules</span>: &#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<img src="/blog/blog/posts/blog/posts/1c1561a3/vuexx.gif" class>
+<img src="/posts/1c1561a3/vuexx.gif" class>
 
 <h5 id="3-2-5-常量类型"><a href="#3-2-5-常量类型" class="headerlink" title="3.2.5 常量类型"></a>3.2.5 常量类型</h5><p>这个在开发中用的非常多。简单来讲就是把「魔法字符串」定义成一个常量，这样可以保证在不同文件中使用同一个字符串的时候，不会因为敲错字符串导致程序出现问题。</p>
 <blockquote>
@@ -385,7 +385,7 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    ......</span><br><span class="line">    &lt;h3&gt;使用getters&lt;/h3&gt;</span><br><span class="line">    &lt;h3&gt;&#123;&#123; $store.getters.powerCounter &#125;&#125;&lt;/h3&gt;</span><br><span class="line">    &lt;h3&gt;&#123;&#123; $store.getters.ageBiggerThan20 &#125;&#125;&lt;/h3&gt;</span><br><span class="line">    &lt;hello-vuex&gt;&lt;/hello-vuex&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
 
-<img src="/blog/blog/posts/blog/posts/1c1561a3/image-20210321180958645.png" class>
+<img src="/posts/1c1561a3/image-20210321180958645.png" class>
 
 <p>如果 getters 中的方法需要接收参数，需要让 getters 中的方法返回一个函数，用这个返回的函数来接收参数：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="attr">getters</span>: &#123;</span><br><span class="line">    ......</span><br><span class="line">    <span class="comment">// 返回年龄大于age的学生</span></span><br><span class="line">    <span class="title function_">ageBiggerThan</span>(<span class="params">state</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="params">age</span> =&gt;</span> state.<span class="property">students</span>.<span class="title function_">filter</span>(<span class="function"><span class="params">s</span> =&gt;</span> s.<span class="property">age</span> &gt;= age);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
@@ -403,7 +403,7 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;template xmlns=&quot;http://www.w3.org/1999/html&quot;&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;h3&gt;演示modules中的内容&lt;/h3&gt;</span><br><span class="line">    &lt;h3&gt;模块a &#123;&#123; $store.state.a.name &#125;&#125;&lt;/h3&gt;</span><br><span class="line">    &lt;button @click=&quot;updateNameA()&quot;&gt;点击给JOJO改名&lt;/button&gt;</span><br><span class="line">    &lt;h3&gt;模块b &#123;&#123; $store.state.b.name &#125;&#125;&lt;/h3&gt;</span><br><span class="line">    &lt;button @click=&quot;updateNameB()&quot;&gt;点击给DIO改名&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;App&#x27;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      message: &#x27;我是App组件&#x27;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    updateNameA()&#123;</span><br><span class="line">      this.$store.commit(&#x27;updateNameA&#x27;,&#123;name:&#x27;Kujo Jotaro&#x27;&#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    updateNameB()&#123;</span><br><span class="line">      this.$store.commit(&#x27;updateNameB&#x27;,&#123;name:&#x27;Kono DIO哒!&#x27;&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
-<img src="/blog/blog/posts/blog/posts/1c1561a3/vuexxx.gif" class>
+<img src="/posts/1c1561a3/vuexxx.gif" class>
 
 <h3 id="4-项目结构"><a href="#4-项目结构" class="headerlink" title="4. 项目结构"></a>4. 项目结构</h3><p>有了 Vuex 之后，为了让项目结构更清晰，应该这样组织：</p>
 <ul>
@@ -415,7 +415,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> mutations <span class="keyword">from</span> <span class="string">&#x27;@/store/mutations&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> actions <span class="keyword">from</span> <span class="string">&#x27;@/store/actions&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> getters <span class="keyword">from</span> <span class="string">&#x27;@/store/getters&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> moduleA <span class="keyword">from</span> <span class="string">&#x27;@/store/mudules/a&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> moduleB <span class="keyword">from</span> <span class="string">&#x27;@/store/mudules/b&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  <span class="attr">counter</span>: <span class="number">1000</span>,</span><br><span class="line">  <span class="attr">students</span>: [</span><br><span class="line">    &#123;<span class="attr">id</span>: <span class="number">101</span>, <span class="attr">name</span>: <span class="string">&#x27;Horsen1&#x27;</span>, <span class="attr">age</span>: <span class="number">18</span>&#125;,</span><br><span class="line">    &#123;<span class="attr">id</span>: <span class="number">102</span>, <span class="attr">name</span>: <span class="string">&#x27;Horsen2&#x27;</span>, <span class="attr">age</span>: <span class="number">21</span>&#125;,</span><br><span class="line">    &#123;<span class="attr">id</span>: <span class="number">103</span>, <span class="attr">name</span>: <span class="string">&#x27;Horsen3&#x27;</span>, <span class="attr">age</span>: <span class="number">23</span>&#125;,</span><br><span class="line">    &#123;<span class="attr">id</span>: <span class="number">104</span>, <span class="attr">name</span>: <span class="string">&#x27;Horsen4&#x27;</span>, <span class="attr">age</span>: <span class="number">3</span>&#125;,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">info</span>: &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;IceBear&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">22</span>,</span><br><span class="line">    <span class="attr">height</span>: <span class="number">171</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  state,</span><br><span class="line">  mutations,</span><br><span class="line">  actions,</span><br><span class="line">  getters,</span><br><span class="line">  <span class="attr">modules</span>: &#123;</span><br><span class="line">    <span class="attr">a</span>: moduleA,</span><br><span class="line">    <span class="attr">b</span>: moduleB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
 
 <p>与此同时目录结构是这样的：</p>
-<img src="/blog/blog/posts/blog/posts/1c1561a3/image-20210322165336254.png" class>
+<img src="/posts/1c1561a3/image-20210322165336254.png" class>
     </div>
 
     
@@ -430,7 +430,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://horsenliu.github.io/blog/posts/1c1561a3.html" title="11_Vuex">http://horsenliu.github.io/blog/posts/1c1561a3.html</a>
+    <a href="http://horsenliu.github.io/posts/1c1561a3.html" title="11_Vuex">http://horsenliu.github.io/posts/1c1561a3.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -442,8 +442,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/blog/tags/Vue/" rel="tag"><i class="fa fa-tag"></i> Vue</a>
-              <a href="/blog/tags/Vuex/" rel="tag"><i class="fa fa-tag"></i> Vuex</a>
+              <a href="/tags/Vue/" rel="tag"><i class="fa fa-tag"></i> Vue</a>
+              <a href="/tags/Vuex/" rel="tag"><i class="fa fa-tag"></i> Vuex</a>
           </div>
 
         
@@ -452,11 +452,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/blog/posts/8c291354.html" rel="prev" title="10_TabBar 作业">
+    <a href="/posts/8c291354.html" rel="prev" title="10_TabBar 作业">
       <i class="fa fa-chevron-left"></i> 10_TabBar 作业
     </a></div>
       <div class="post-nav-item">
-    <a href="/blog/posts/4916dc18.html" rel="next" title="12_Axios">
+    <a href="/posts/4916dc18.html" rel="next" title="12_Axios">
       12_Axios <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -524,27 +524,27 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="Horsen Liu"
-      src="/blog/images/avatar.png">
+      src="/images/avatar.png">
   <p class="site-author-name" itemprop="name">Horsen Liu</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/blog/archives/">
+          <a href="/archives/">
         
           <span class="site-state-item-count">220</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/blog/categories/">
+            <a href="/categories/">
           
         <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/blog/tags/">
+            <a href="/tags/">
           
         <span class="site-state-item-count">123</span>
         <span class="site-state-item-name">标签</span></a>
@@ -566,7 +566,7 @@
       </span>
   </div>
   <div class="cc-license motion-element" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/blog/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
@@ -645,48 +645,48 @@
   </div>
 
   
-  <script src="/blog/lib/anime.min.js"></script>
-  <script src="/blog/lib/velocity/velocity.min.js"></script>
-  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/blog/js/utils.js"></script>
+<script src="/js/utils.js"></script>
 
-<script src="/blog/js/motion.js"></script>
-
-
-<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/js/motion.js"></script>
 
 
-<script src="/blog/js/next-boot.js"></script>
-
-<script src="/blog/js/bookmark.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
+<script src="/js/next-boot.js"></script>
 
-
-  
-
-
-
-
-  
-<script src="/blog/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
+<script src="/js/bookmark.js"></script>
 
 
 
 
   
 
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
-<script src="/blog/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/blog/live2dw/assets/assets/hijiki.model.json"},"display":{"superSample":2,"width":180,"height":360,"position":"left","hOffset":40,"vOffset":-60},"mobile":{"show":false,"scale":0.1},"react":{"opacityDefault":0.7,"opacityOnHover":0.8},"log":false});</script></body>
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"superSample":2,"width":180,"height":360,"position":"left","hOffset":40,"vOffset":-60},"mobile":{"show":false,"scale":0.1},"react":{"opacityDefault":0.7,"opacityOnHover":0.8},"log":false});</script></body>
 </html>
